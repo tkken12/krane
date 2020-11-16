@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "krane.fullname" . }}-cloud-ar-vr-policy
+  namespace: kube-system
+  labels:
+    app: {{ include "krane.name" . }}
+    chart: {{ include "krane.chart" . }}
+    release: {{ .Release.Name }}
+data:
+  policy.cfg: |
+    {
+      "kind" : "Policy",
+      "apiVersion" : "v1",
+      "predicates" : [
+        {
+            "name": "NoVolumeZoneConflict"
+        },
+        {
+            "name": "MaxEBSVolumeCount"
+        },
+        {
+            "name": "MaxGCEPDVolumeCount"
+        },
+        {
+            "name": "MaxAzureDiskVolumeCount"
+        },
+        {
+            "name": "MatchInterPodAffinity"
+        },
+        {
+            "name": "NoDiskConflict"
+        },
+        {
+            "name": "GeneralPredicates"
+        },
+        {
+            "name": "PodToleratesNodeTaints"
+        },
+        {
+            "argument": {
+                "serviceAffinity": {
+                    "labels": [
+                        "region"
+                    ]
+                }
+            },
+            "name": "Region"
+
+         }
+      ],
+      "priorities" : [
+        {
+            "name": "SelectorSpreadPriority",
+            "weight": 1
+        },
+        {
+            "name": "InterPodAffinityPriority",
+            "weight": 1
+        },
+        {
+            "name": "LeastRequestedPriority",
+            "weight": 1
+        },
+        {
+            "name": "BalancedResourceAllocation",
+            "weight": 1
+        },
+        {
+            "name": "NodePreferAvoidPodsPriority",
+            "weight": 10000
+        },
+        {
+            "name": "NodeAffinityPriority",
+            "weight": 1
+        },
+        {
+            "name": "TaintTolerationPriority",
+            "weight": 1
+        },
+        {
+            "argument": {
+                "serviceAntiAffinity": {
+                    "label": "zone"
+                }
+            },
+            "name": "Zone",
+            "weight": 2
+        }
+      ],
+      "extenders" : [
+        {
+          "urlPrefix": "http://localhost/scheduler",
+          "filterVerb":"predicates/latency_group",
+          "prioritizeVerb": "priorities/latency_group",
+          "preemptVerb": "",
+          "bindVerb": "",
+          "weight": 3,
+          "enableHttps": false,
+          "nodeCacheCapable": false 
+        },{
+          "urlPrefix": "http://localhost/scheduler",
+          "filterVerb":"predicates/network_utilization",
+          "prioritizeVerb": "priorities/network_utilization",
+          "preemptVerb": "",
+          "bindVerb": "bind",
+          "weight": 2,
+          "enableHttps": false,
+          "nodeCacheCapable": false 
+        }
+      ],
+      "hardPodAffinitySymmetricWeight" : 1
+    }

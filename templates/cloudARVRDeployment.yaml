@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "krane.fullname" . }}-cloud-ar-vr
+  namespace: kube-system
+  labels:
+    app: {{ include "krane.name" . }}
+    chart: {{ include "krane.chart" . }}
+    release: {{ .Release.Name }}
+    component: scheduler
+    tier: contol-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: scheduler
+      tier: control-plane
+      app: {{ include "krane.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "krane.name" . }}
+        release: {{ .Release.Name }}
+        component: scheduler
+        tier: control-plane
+    spec:
+      serviceAccountName: {{ include "krane.fullname" . }}
+      volumes:
+      - name: scheduler-config
+        configMap:
+          name: {{ include "krane.fullname" . }}-cloud-ar-vr-scheduler-config
+          namespace: kube-system
+      - name: extender-config
+        configMap:
+          name: {{ include "krane.fullname" . }}-extender-config
+          namespace: kube-system
+      containers:
+        - name: scheduler
+          image: "{{ .Values.images.scheduler.repository }}:{{ .Values.images.scheduler.tag }}"
+          imagePullPolicy: {{ .Values.images.scheduler.pullPolicy }}
+          args:
+          - kube-scheduler
+          - --config=/scheduler/config.yaml
+          - -v={{ .Values.configuration.logLevel }}
+          volumeMounts:
+          - name: scheduler-config
+            mountPath: /scheduler
+        - name: extender
+          image: "{{ .Values.images.extender.repository }}:{{ .Values.images.extender.tag }}"
+          imagePullPolicy: {{ .Values.images.extender.pullPolicy }}
+          args:
+          - -ip={{ .Values.configuration.apiServerIpAddr }}
+          - -pod={{ .Values.configuration.podName }}
+          - -c={{ .Values.configuration.configFile }}
+          - -l={{ .Values.configuration.logLevel }} 
+          volumeMounts:
+          - name: extender-config
+            mountPath: {{ .Values.configuration.mountPath }}
+          livenessProbe:
+            httpGet:
+              path: /version
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: /version
+              port: 80
+          ports:
+            - containerPort: 80

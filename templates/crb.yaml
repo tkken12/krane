@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "krane.fullname" . }}
+  namespace: kube-system
+  labels:
+    app: {{ include "krane.name" . }}
+    chart: {{ include "krane.chart" . }}
+    release: {{ .Release.Name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "krane.fullname" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "krane.fullname" . }}
+  namespace: kube-system

@@ -1,0 +1,17 @@
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:141:[0m nodeLatencyGroup --> high podLatencyGroup --> medium
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:141:[0m nodeLatencyGroup --> medium podLatencyGroup --> medium
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:162:[0m  18 10 20 50 20 40 60
+[  [0;32minfo[0m ] 2020/11/08 15:55:33 [1;30minit.go:47:[0m Network Utilization [Medium] is satisfied
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:115:[0m NodeGroupEnoughtBW
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mqueue.go:99:[0m total length of the queues = 0
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:39:[0m Show Legacy NodeIP: 220.149.13.192, PodIP: 192.168.9.72
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:51:[0m the arguements --> [-l=6 -s=migration -pod=192.168.9.72 -node=220.149.13.192 -i=220.149.13.178:5050/krane-agent:revision_v0.75 -n=krane-agent] 
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mfloatingPod.go:16:[0m addFloatingPod
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mmonitoring.go:71:[0m Pod is created for migration..
+[  [0;32minfo[0m ] 2020/11/08 15:55:33 [1;30mlatencyGroupPredicate.go:43:[0m kube-node3 was filtered by latency_group predicate. Only the pod that has low latency. service profile can be deployed in Node group of low latency.
+[0;31m[ error ][0m 2020/11/08 15:55:33 [1;30mlatencyGroupPredicate.go:26:[0m Latency group of node is invalid.
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mfloatingPod.go:43:[0m checkFloatingPod
+[  [0;32minfo[0m ] 2020/11/08 15:55:33 [1;30mroutes.go:81:[0m latency_group hostPriorityList = [{"Host":"kube-node1","Score":0},{"Host":"kube-node2","Score":10}]
+[  [0;32minfo[0m ] 2020/11/08 15:55:33 [1;30mroutes.go:81:[0m network_utilization hostPriorityList = [{"Host":"kube-node1","Score":0},{"Host":"kube-node2","Score":0}]
+[ [0;36mdebug[0m ] 2020/11/08 15:55:33 [1;30mgcBind.go:50:[0m nodeLatencyGroup-->medium podLatencyGroup-->medium
+[  [0;32minfo[0m ] 2020/11/08 15:55:33 [1;30mgcBind.go:75:[0m krane-agent-m-7zqx was placed to kube-node2
