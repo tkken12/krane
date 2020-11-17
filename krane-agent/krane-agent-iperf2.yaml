@@ -9,16 +9,16 @@ spec:
  restartPolicy: Never
  containers:
  - name: krane-agent
-   image: 220.149.13.178:5050/krane-agent:revision_v1.00
+   image: 220.149.13.178:5050/krane-agent:revision_v0.99
    args: 
    - -l=4
    - -pod=192.168.5.1
    - -node=220.149.13.193
-   - -p=1234:1234/udp
+   - -p=5001:5001/udp
    - -s=initial
-   - -i=dumonet/vlc:youtube
-   - -n=vlc
-   - -c=/tmp/vlc.sh 220.149.13.179
+   - -i=dumonet/iperf2:etri
+   - -n=iperf
+   - -c=/bin/bash ./tmp/iperf2.sh 220.149.13.179
    securityContext:
      privileged: true
    volumeMounts:
